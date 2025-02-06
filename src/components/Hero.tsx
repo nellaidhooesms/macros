@@ -6,7 +6,7 @@ export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center hero-image">
       <div className="absolute inset-0 bg-black/30" />
-      <div className="relative z-10 container mx-auto px-4 text-center text-white md:text-left md:w-1/2">
+      <div className="relative z-10 container mx-auto px-4 text-center text-white md:text-left md:pl-16 lg:pl-24 md:max-w-[600px] md:ml-0">
         <p className="text-lg md:text-xl mb-4 animate-fade-in opacity-0 [animation-delay:200ms]">
           Welcome to Kaafu Atoll
         </p>
