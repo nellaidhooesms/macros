@@ -3,6 +3,9 @@ import Hero from "@/components/Hero";
 import BookingForm from "@/components/BookingForm";
 import PopularDestinations from "@/components/PopularDestinations";
 import Navbar from "@/components/Navbar";
+import About from "@/components/About";
+import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -22,7 +25,7 @@ const Index = () => {
             <div className="fixed bottom-4 right-4 z-50">
               <Button
                 onClick={() => setIsFormOpen(!isFormOpen)}
-                className="bg-ocean hover:bg-ocean-dark transition-colors duration-300"
+                className="bg-ocean hover:bg-ocean-dark transition-colors duration-300 rounded-xl"
               >
                 {isFormOpen ? (
                   <>
@@ -52,6 +55,9 @@ const Index = () => {
         )}
       </div>
       <PopularDestinations />
+      <About />
+      <Contact />
+      <Footer />
     </main>
   );
 };

@@ -20,7 +20,7 @@ export default function BookingForm({ onClose }: BookingFormProps) {
 
   return (
     <section id="booking" className="h-full">
-      <form className="space-y-4 bg-white/50 backdrop-blur-md p-6 rounded-lg h-full overflow-y-auto">
+      <form className="space-y-4 bg-white/50 backdrop-blur-md p-6 rounded-2xl h-full overflow-y-auto">
         <div className="flex justify-between items-center space-y-2">
           <div>
             <h2 className="text-2xl font-bold text-white">Plan Your Journey Today</h2>
@@ -32,7 +32,7 @@ export default function BookingForm({ onClose }: BookingFormProps) {
             <Button
               variant="ghost"
               size="icon"
-              className="text-white hover:bg-white/20"
+              className="text-white hover:bg-white/20 rounded-xl"
               onClick={onClose}
             >
               <X className="h-6 w-6" />
@@ -40,17 +40,17 @@ export default function BookingForm({ onClose }: BookingFormProps) {
           )}
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <Input placeholder="First Name" className="bg-white/50" />
-          <Input placeholder="Last Name" className="bg-white/50" />
+          <Input placeholder="First Name" className="bg-white/50 rounded-xl" />
+          <Input placeholder="Last Name" className="bg-white/50 rounded-xl" />
         </div>
-        <Input placeholder="Email" type="email" className="bg-white/50" />
-        <Input placeholder="Phone" type="tel" className="bg-white/50" />
+        <Input placeholder="Email" type="email" className="bg-white/50 rounded-xl" />
+        <Input placeholder="Phone" type="tel" className="bg-white/50 rounded-xl" />
         <Popover>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
               className={cn(
-                "w-full justify-start text-left font-normal bg-white/50",
+                "w-full justify-start text-left font-normal bg-white/50 rounded-xl",
                 !date && "text-muted-foreground"
               )}
             >
@@ -58,7 +58,7 @@ export default function BookingForm({ onClose }: BookingFormProps) {
               {date ? format(date, "PPP") : <span>Pick a date</span>}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
+          <PopoverContent className="w-auto p-0 rounded-xl">
             <Calendar
               mode="single"
               selected={date}
@@ -72,14 +72,14 @@ export default function BookingForm({ onClose }: BookingFormProps) {
           type="number"
           min="1"
           max="18"
-          className="bg-white/50"
+          className="bg-white/50 rounded-xl"
         />
-        <Input placeholder="Destination" className="bg-white/50" />
+        <Input placeholder="Destination" className="bg-white/50 rounded-xl" />
         <Textarea
           placeholder="Additional Notes"
-          className="bg-white/50"
+          className="bg-white/50 rounded-xl"
         />
-        <Button className="w-full bg-ocean hover:bg-ocean-dark transition-colors duration-300">
+        <Button className="w-full bg-ocean hover:bg-ocean-dark transition-colors duration-300 rounded-xl">
           Submit Booking Request
         </Button>
       </form>
