@@ -4,22 +4,40 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, X } from "lucide-react";
 import { format } from "date-fns";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
-export default function BookingForm() {
+interface BookingFormProps {
+  onClose?: () => void;
+}
+
+export default function BookingForm({ onClose }: BookingFormProps) {
   const [date, setDate] = useState<Date>();
+  const isMobile = useIsMobile();
 
   return (
-    <section id="booking">
-      <form className="space-y-4 bg-white/50 backdrop-blur-md p-6 rounded-lg">
-        <div className="space-y-2">
-          <h2 className="text-2xl font-bold text-white">Plan Your Journey Today</h2>
-          <p className="text-white/90">
-            Fill out the form to book your speedboat transfer.
-          </p>
+    <section id="booking" className="h-full">
+      <form className="space-y-4 bg-white/50 backdrop-blur-md p-6 rounded-lg h-full overflow-y-auto">
+        <div className="flex justify-between items-center space-y-2">
+          <div>
+            <h2 className="text-2xl font-bold text-white">Plan Your Journey Today</h2>
+            <p className="text-white/90">
+              Fill out the form to book your speedboat transfer.
+            </p>
+          </div>
+          {isMobile && onClose && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-white/20"
+              onClick={onClose}
+            >
+              <X className="h-6 w-6" />
+            </Button>
+          )}
         </div>
         <div className="grid grid-cols-2 gap-4">
           <Input placeholder="First Name" className="bg-white/50" />
