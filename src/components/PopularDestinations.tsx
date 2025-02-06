@@ -1,5 +1,4 @@
 
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
 const destinations = [
@@ -50,14 +49,7 @@ export default function PopularDestinations() {
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/0 p-6 flex flex-col justify-end text-white">
                 <h3 className="text-xl font-bold mb-2">{destination.name}</h3>
-                <p className="text-sm mb-4">{destination.description}</p>
-                <Button 
-                  variant="outline" 
-                  className="w-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border-white/20"
-                  onClick={() => document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' })}
-                >
-                  Book Transfer
-                </Button>
+                <p className="text-sm">{destination.description}</p>
               </div>
             </div>
           ))}
