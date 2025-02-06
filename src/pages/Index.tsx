@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import ScrollToTop from "@/components/ScrollToTop";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -58,6 +59,7 @@ const Index = () => {
       <About />
       <Contact />
       <Footer />
+      <ScrollToTop />
     </main>
   );
 };

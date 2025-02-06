@@ -1,5 +1,6 @@
 
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 const destinations = [
   {
@@ -23,6 +24,12 @@ const destinations = [
 ];
 
 export default function PopularDestinations() {
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
+
+  const handleImageLoad = (id: number) => {
+    setLoadedImages(prev => new Set([...prev, id]));
+  };
+
   return (
     <section className="py-20 bg-gradient-to-b from-white to-[#e7f0fd]">
       <div className="container mx-auto px-4">
@@ -40,7 +47,7 @@ export default function PopularDestinations() {
             Discover the beauty of these incredible locations, each offering unique experiences and unforgettable memories.
           </p>
         </motion.div>
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {destinations.map((destination, index) => (
             <motion.div
               key={destination.id}
@@ -50,17 +57,29 @@ export default function PopularDestinations() {
               viewport={{ once: true }}
               className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
             >
-              <div className="aspect-w-16 aspect-h-9">
+              <div className="aspect-w-16 aspect-h-9 bg-gray-200">
+                {!loadedImages.has(destination.id) && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-8 h-8 border-4 border-ocean border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                )}
                 <img
                   src={destination.image}
                   alt={destination.name}
-                  className="object-cover w-full h-full transform transition-transform duration-500 group-hover:scale-110"
+                  onLoad={() => handleImageLoad(destination.id)}
+                  className={`object-cover w-full h-full transform transition-transform duration-500 group-hover:scale-110 ${
+                    loadedImages.has(destination.id) ? 'opacity-100' : 'opacity-0'
+                  }`}
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 flex flex-col justify-end text-white">
-                <h3 className="text-xl font-bold mb-2 transform transition-transform duration-300 group-hover:translate-y-[-4px]">
+                <motion.h3 
+                  className="text-xl font-bold mb-2"
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
                   {destination.name}
-                </h3>
+                </motion.h3>
                 <p className="text-sm opacity-90 transform transition-all duration-300 group-hover:opacity-100">
                   {destination.description}
                 </p>
