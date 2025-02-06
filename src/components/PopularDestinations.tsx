@@ -1,34 +1,59 @@
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const destinations = [
   {
     id: 1,
     name: "Malé",
     description: "The vibrant capital city of Maldives",
-    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800", // Optimized with width parameter
   },
   {
     id: 2,
     name: "Hulhumalé",
     description: "A modern city built on reclaimed land",
-    image: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?auto=format&fit=crop&q=80&w=800", // Optimized with width parameter
   },
   {
     id: 3,
     name: "Maafushi",
     description: "Popular local island with beautiful beaches",
-    image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&q=80&w=800", // Optimized with width parameter
   },
 ];
 
 export default function PopularDestinations() {
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
+  const [visibleDestinations, setVisibleDestinations] = useState<Set<number>>(new Set());
+  const observers = useRef<{ [key: number]: IntersectionObserver }>({});
 
   const handleImageLoad = (id: number) => {
     setLoadedImages(prev => new Set([...prev, id]));
   };
+
+  useEffect(() => {
+    destinations.forEach(destination => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              setVisibleDestinations(prev => new Set([...prev, destination.id]));
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      observers.current[destination.id] = observer;
+    });
+
+    return () => {
+      Object.values(observers.current).forEach(observer => observer.disconnect());
+    };
+  }, []);
 
   return (
     <section className="py-20 bg-gradient-to-b from-white to-[#e7f0fd]">
@@ -51,26 +76,38 @@ export default function PopularDestinations() {
           {destinations.map((destination, index) => (
             <motion.div
               key={destination.id}
+              ref={el => {
+                if (el && observers.current[destination.id]) {
+                  observers.current[destination.id].observe(el);
+                }
+              }}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.2 }}
               viewport={{ once: true }}
               className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
             >
-              <div className="aspect-w-16 aspect-h-9 bg-gray-200">
-                {!loadedImages.has(destination.id) && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-8 h-8 border-4 border-ocean border-t-transparent rounded-full animate-spin"></div>
-                  </div>
+              <div className="aspect-w-16 aspect-h-9">
+                {!visibleDestinations.has(destination.id) ? (
+                  <Skeleton className="w-full h-full rounded-lg" />
+                ) : (
+                  <>
+                    {!loadedImages.has(destination.id) && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-lg">
+                        <div className="w-8 h-8 border-4 border-ocean border-t-transparent rounded-full animate-spin"></div>
+                      </div>
+                    )}
+                    <img
+                      src={destination.image}
+                      alt={destination.name}
+                      loading="lazy"
+                      onLoad={() => handleImageLoad(destination.id)}
+                      className={`object-cover w-full h-full transform transition-transform duration-500 group-hover:scale-110 rounded-lg ${
+                        loadedImages.has(destination.id) ? 'opacity-100' : 'opacity-0'
+                      }`}
+                    />
+                  </>
                 )}
-                <img
-                  src={destination.image}
-                  alt={destination.name}
-                  onLoad={() => handleImageLoad(destination.id)}
-                  className={`object-cover w-full h-full transform transition-transform duration-500 group-hover:scale-110 ${
-                    loadedImages.has(destination.id) ? 'opacity-100' : 'opacity-0'
-                  }`}
-                />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 flex flex-col justify-end text-white">
                 <motion.h3 
