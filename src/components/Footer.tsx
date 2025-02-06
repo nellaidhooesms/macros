@@ -1,5 +1,5 @@
 
-import { Facebook, Instagram, Twitter, WhatsApp } from "lucide-react";
+import { Facebook, Instagram, Twitter } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -44,9 +44,6 @@ export default function Footer() {
               </a>
               <a href="#" className="hover:text-ocean-light transition-colors">
                 <Twitter className="w-6 h-6" />
-              </a>
-              <a href="#" className="hover:text-ocean-light transition-colors">
-                <WhatsApp className="w-6 h-6" />
               </a>
             </div>
           </div>
