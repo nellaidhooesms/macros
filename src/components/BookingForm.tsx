@@ -17,7 +17,7 @@ export default function BookingForm({ onClose }: BookingFormProps) {
   const isMobile = useIsMobile();
 
   return (
-    <section id="booking" className="h-full">
+    <section id="booking" className="h-full w-full max-w-6xl mx-auto">
       <form className="space-y-4 bg-white/50 backdrop-blur-md p-6 rounded-2xl h-full overflow-y-auto">
         <div className="flex justify-between items-center">
           <div>
@@ -38,7 +38,7 @@ export default function BookingForm({ onClose }: BookingFormProps) {
         
         <div className={cn(
           "grid gap-4",
-          !isMobile && "grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
+          !isMobile && "grid-cols-2 md:grid-cols-3"
         )}>
           <Input 
             placeholder="Full Name" 
