@@ -61,7 +61,7 @@ export default function BookingForm({ onClose }: BookingFormProps) {
                 {date ? format(date, "PPP") : <span>Pick a date</span>}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 rounded-xl">
+            <PopoverContent className="w-auto p-0 rounded-xl bg-white/80">
               <Calendar
                 mode="single"
                 selected={date}
