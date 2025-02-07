@@ -1,4 +1,3 @@
-
 import Hero from "@/components/Hero";
 import BookingForm from "@/components/BookingForm";
 import PopularDestinations from "@/components/PopularDestinations";
@@ -48,8 +47,8 @@ const Index = () => {
             </div>
           </>
         ) : (
-          <div className="absolute inset-y-0 right-0 flex items-center pr-4 md:pr-8 lg:pr-16">
-            <div className="w-full max-w-md">
+          <div className="container mx-auto px-4 -mt-20">
+            <div className="max-w-4xl mx-auto">
               <BookingForm />
             </div>
           </div>
