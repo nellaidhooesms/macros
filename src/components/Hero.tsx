@@ -1,6 +1,3 @@
-
-import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
 export default function Hero() {
@@ -37,20 +34,6 @@ export default function Hero() {
         >
           Fast, Reliable, and Luxurious Speedboat Transfers for Up to 18 Passengers
         </motion.p>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-        >
-          <Button 
-            size="lg" 
-            className="bg-ocean hover:bg-ocean-dark transition-all duration-300 transform hover:scale-105"
-            onClick={() => document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' })}
-          >
-            Book Now
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </motion.div>
       </motion.div>
     </section>
   );
