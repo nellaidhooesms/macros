@@ -36,7 +36,7 @@ export default function Footer() {
           <div className="space-y-4">
             <h4 className="text-lg font-semibold">Connect With Us</h4>
             <div className="flex space-x-4">
-              <a href="#" className="hover:text-ocean-light transition-colors">
+              <a href="https://www.facebook.com/macros.speed" className="hover:text-ocean-light transition-colors">
                 <Facebook className="w-6 h-6" />
               </a>
               <a href="#" className="hover:text-ocean-light transition-colors">
@@ -50,7 +50,7 @@ export default function Footer() {
         </div>
         
         <div className="border-t border-white/10 mt-12 pt-8 text-center">
-          <p>&copy; {new Date().getFullYear()} KaafuCruise. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Macros Speed. All rights reserved.</p>
         </div>
       </div>
     </footer>

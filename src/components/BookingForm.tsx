@@ -1,12 +1,13 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon, X } from "lucide-react";
 import { format } from "date-fns";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import axios from "axios";
 
 interface BookingFormProps {
   onClose?: () => void;
@@ -14,15 +15,55 @@ interface BookingFormProps {
 
 export default function BookingForm({ onClose }: BookingFormProps) {
   const [date, setDate] = useState<Date>();
+  const [fullName, setFullName] = useState("");
+  const [contactInfo, setContactInfo] = useState("");
+  const [numberOfPassengers, setNumberOfPassengers] = useState("");
+  const [destinationFrom, setDestinationFrom] = useState("");
+  const [destinationTo, setDestinationTo] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
   const isMobile = useIsMobile();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess(false);
+
+    try {
+      const response = await axios.post("http://localhost:5000/submit-booking-form", {
+        fullName,
+        contactInfo,
+        date: date ? format(date, "PPP") : "",
+        numberOfPassengers,
+        destinationFrom,
+        destinationTo,
+      });
+
+      if (response.status === 200) {
+        setSuccess(true);
+        setFullName("");
+        setContactInfo("");
+        setDate(undefined);
+        setNumberOfPassengers("");
+        setDestinationFrom("");
+        setDestinationTo("");
+      }
+    } catch (err) {
+      setError("Failed to send booking request. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <section id="booking" className="h-full w-full max-w-6xl mx-auto">
-      <form className="space-y-4 bg-white/50 backdrop-blur-md p-6 rounded-2xl h-full overflow-y-auto">
+      <form className="space-y-4 bg-white/50 backdrop-blur-md p-6 rounded-2xl h-full overflow-y-auto" onSubmit={handleSubmit}>
         <div className="flex justify-between items-center">
           <div>
-            <h2 className="text-2xl font-bold text-white">Plan Your Journey Today</h2>
-            <p className="text-white/90">Fill out the form to book your speedboat transfer.</p>
+            <h2 className="text-2xl font-bold text-ocean-dark">Plan Your Journey Today</h2>
+            <p className="text-ocean-dark">Fill out the form to book your speedboat transfer.</p>
           </div>
           {isMobile && onClose && (
             <Button
@@ -43,10 +84,16 @@ export default function BookingForm({ onClose }: BookingFormProps) {
           <Input 
             placeholder="Full Name" 
             className="bg-white/50 rounded-xl"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            required
           />
           <Input 
             placeholder="Email or Mobile" 
             className="bg-white/50 rounded-xl"
+            value={contactInfo}
+            onChange={(e) => setContactInfo(e.target.value)}
+            required
           />
           <Popover>
             <PopoverTrigger asChild>
@@ -76,20 +123,35 @@ export default function BookingForm({ onClose }: BookingFormProps) {
             min="1"
             max="18"
             className="bg-white/50 rounded-xl"
+            value={numberOfPassengers}
+            onChange={(e) => setNumberOfPassengers(e.target.value)}
+            required
           />
           <Input 
             placeholder="From" 
             className="bg-white/50 rounded-xl"
+            value={destinationFrom}
+            onChange={(e) => setDestinationFrom(e.target.value)}
+            required
           />
           <Input 
             placeholder="To" 
             className="bg-white/50 rounded-xl"
+            value={destinationTo}
+            onChange={(e) => setDestinationTo(e.target.value)}
+            required
           />
         </div>
         
-        <Button className="w-full bg-ocean hover:bg-ocean-dark transition-colors duration-300 rounded-xl">
-          Submit Booking Request
+        <Button 
+          type="submit"
+          className="w-full bg-ocean hover:bg-ocean-dark transition-colors duration-300 rounded-xl"
+          disabled={loading}
+        >
+          {loading ? "Submitting..." : "Submit Booking Request"}
         </Button>
+        {success && <p className="text-green-600 text-center">Booking request sent successfully!</p>}
+        {error && <p className="text-red-600 text-center">{error}</p>}
       </form>
     </section>
   );

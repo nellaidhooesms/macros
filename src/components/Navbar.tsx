@@ -7,18 +7,18 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/10 backdrop-blur-md border-b border-white/20">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-ocean-dark backdrop-blur-md border-b border-white/20">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <a href="/" className="text-white font-bold text-xl">
-            KaafuCruise
+            Macros Speed
           </a>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             <a href="#" className="text-white hover:text-ocean-light transition-colors">Home</a>
-            <a href="#" className="text-white hover:text-ocean-light transition-colors">About</a>
+            <a href="#about" className="text-white hover:text-ocean-light transition-colors">About</a>
             <a href="#" className="text-white hover:text-ocean-light transition-colors">Services</a>
             <a href="#" className="text-white hover:text-ocean-light transition-colors">Destinations</a>
             <a href="#" className="text-white hover:text-ocean-light transition-colors">Contact</a>

@@ -55,7 +55,6 @@ const Index = () => {
         )}
       </div>
       <PopularDestinations />
-      <About />
       <Contact />
       <Footer />
       <ScrollToTop />

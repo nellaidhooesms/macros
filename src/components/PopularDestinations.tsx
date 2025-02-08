@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -6,53 +5,119 @@ import { Skeleton } from "@/components/ui/skeleton";
 const destinations = [
   {
     id: 1,
-    name: "Malé",
-    description: "The vibrant capital city of Maldives",
-    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800", // Optimized with width parameter
+    name: "Velana International Airport",
+    description: "Velana International Airport, located on Hulhulé Island in the Maldives, is the main international gateway to the country.",
+    image: "images/airport.jpg",
+    distance: "",
   },
   {
     id: 2,
-    name: "Hulhumalé",
-    description: "A modern city built on reclaimed land",
-    image: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?auto=format&fit=crop&q=80&w=800", // Optimized with width parameter
+    name: "Malé",
+    description: "The vibrant capital city of Maldives",
+    image: "images/male.jpg",
+    distance: "2 km from Velana International Airport",
   },
   {
     id: 3,
+    name: "Hulhumalé",
+    description: "A modern city built on reclaimed land",
+    image: "images/hulhumale.jpg",
+    distance: "5 km from Velana International Airport",
+  },
+  {
+    id: 4,
     name: "Maafushi",
     description: "Popular local island with beautiful beaches",
-    image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&q=80&w=800", // Optimized with width parameter
+    image: "images/maafushi.jpg",
+    distance: "27 km from Velana International Airport",
   },
+  {
+    id: 5,
+    name: "Huraa",
+    description: "A charming local island known for its lush greenery and traditional Maldivian culture.",
+    image: "images/huraa.webp",
+    distance: "20 km from Velana International Airport",
+  },
+  {
+    id: 6,
+    name: "Himmafushi",
+    description: "A small, vibrant island famous for its surfing spots and water sports.",
+    image: "images/himmafushi.jpg",
+    distance: "18 km from Velana International Airport",
+  },
+  {
+    id: 7,
+    name: "Thulusdhoo",
+    description: "Renowned for its surfing breaks, Coca-Cola factory, and stunning beaches.",
+    image: "images/thulusdhoo.jpg",
+    distance: "28 km from Velana International Airport",
+  },
+  {
+    id: 8,
+    name: "Guraidhoo",
+    description: "A picturesque island with beautiful beaches and a thriving local community.",
+    image: "images/guraidhoo.jpg",
+    distance: "35 km from Velana International Airport",
+  },
+  {
+    id: 9,
+    name: "Gulhi",
+    description: "A small, tranquil island known for its pristine beaches and excellent snorkeling.",
+    image: "images/gulhi.jpg",
+    distance: "25 km from Velana International Airport",
+  },
+  {
+    id: 10,
+    name: "Dhiffushi",
+    description: "A small island near Male, Dhiffushi is known for its beautiful bikini beach and clear turquoise lagoon, perfect for snorkeling and water sports",
+    image: "images/dhiffushi.jpg",
+    distance: "35 km from Velana International Airport",
+  },
+  {
+    id: 11,
+    name: "Cross Road Maldives",
+    description: "Crossroads Maldives is the first integrated resort destination in the Maldives",
+    image: "images/cross-road.jpg",
+    distance: "9 km from Velana International Airport",
+  },
+  {
+    id: 12,
+    name: "Fihalhi Island Resort",
+    description: "Home to Fihalhohi Island Resort, this island offers a variety of activities and amenities for guests, including water sports, diving, and snorkeling",
+    image: "images/fihalhohi.jpg",
+    distance: "39 km from Velana International Airport",
+  },
+  
 ];
 
 export default function PopularDestinations() {
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
   const [visibleDestinations, setVisibleDestinations] = useState<Set<number>>(new Set());
-  const observers = useRef<{ [key: number]: IntersectionObserver }>({});
+  const destinationRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const handleImageLoad = (id: number) => {
     setLoadedImages(prev => new Set([...prev, id]));
   };
 
   useEffect(() => {
-    destinations.forEach(destination => {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              setVisibleDestinations(prev => new Set([...prev, destination.id]));
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.1 }
-      );
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = Number(entry.target.getAttribute("data-id"));
+            setVisibleDestinations(prev => new Set([...prev, id]));
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
 
-      observers.current[destination.id] = observer;
+    destinationRefs.current.forEach(ref => {
+      if (ref) observer.observe(ref);
     });
 
-    return () => {
-      Object.values(observers.current).forEach(observer => observer.disconnect());
-    };
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -72,22 +137,19 @@ export default function PopularDestinations() {
             Discover the beauty of these incredible locations, each offering unique experiences and unforgettable memories.
           </p>
         </motion.div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {destinations.map((destination, index) => (
             <motion.div
               key={destination.id}
-              ref={el => {
-                if (el && observers.current[destination.id]) {
-                  observers.current[destination.id].observe(el);
-                }
-              }}
+              ref={el => destinationRefs.current[index] = el}
+              data-id={destination.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.2 }}
               viewport={{ once: true }}
-              className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+              className="group relative h-96 overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
             >
-              <div className="aspect-w-16 aspect-h-9">
+              <div className="absolute inset-0">
                 {!visibleDestinations.has(destination.id) ? (
                   <Skeleton className="w-full h-full rounded-lg" />
                 ) : (
@@ -119,6 +181,9 @@ export default function PopularDestinations() {
                 </motion.h3>
                 <p className="text-sm opacity-90 transform transition-all duration-300 group-hover:opacity-100">
                   {destination.description}
+                </p>
+                <p className="text-xs opacity-80 mt-1">
+                  {destination.distance}
                 </p>
               </div>
             </motion.div>
