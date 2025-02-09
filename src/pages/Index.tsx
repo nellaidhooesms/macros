@@ -1,8 +1,9 @@
+
 import Hero from "@/components/Hero";
 import BookingForm from "@/components/BookingForm";
 import PopularDestinations from "@/components/PopularDestinations";
 import Navbar from "@/components/Navbar";
-import About from "@/components/About";
+import Services from "@/components/Services";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -48,12 +49,13 @@ const Index = () => {
           </>
         ) : (
           <div className="container mx-auto px-4 -mt-20">
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-6xl mx-auto">
               <BookingForm />
             </div>
           </div>
         )}
       </div>
+      <Services />
       <PopularDestinations />
       <Contact />
       <Footer />
